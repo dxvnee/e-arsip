@@ -26,41 +26,61 @@
     <div x-data="{ sidebarOpen: false }" class="flex h-screen">
         <!-- Sidebar -->
         <div :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-             class="fixed inset-y-0 left-0 z-30 w-64 bg-primary transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0">
+             class="fixed inset-y-0 left-0 z-30 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 shadow-xl"
+             style="background-color: #008e3c;">
             
             <!-- Logo -->
-            <div class="flex items-center justify-center h-16 bg-primary-dark">
-                <div class="flex items-center">
-                    <i class="fas fa-archive text-white text-2xl mr-2"></i>
-                    <span class="text-white text-xl font-bold">E-Arsip Dinkes</span>
+            <div class="flex items-center justify-center h-20 shadow-lg" style="background-color: #006b2d;">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: #efd856;">
+                        <i class="fas fa-archive text-2xl" style="color: #008e3c;"></i>
+                    </div>
+                    <div>
+                        <div class="text-white text-lg font-bold">E-Arsip</div>
+                        <div class="text-xs" style="color: #efd856;">Dinas Kesehatan</div>
+                    </div>
                 </div>
             </div>
 
             <!-- Navigation -->
-            <nav class="mt-5 px-2">
+            <nav class="mt-8 px-4 space-y-2">
                 <!-- Dashboard -->
                 <a href="{{ route('dashboard') }}" 
-                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('dashboard') ? 'bg-primary-dark text-white' : 'text-gray-100 hover:bg-primary-dark hover:text-white' }}">
-                    <i class="fas fa-tachometer-alt mr-3 text-gray-300 group-hover:text-white"></i>
-                    Dashboard
+                   class="group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
+                   style="{{ request()->routeIs('dashboard') ? 'background-color: #006b2d; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);' : 'color: #e5e7eb;' }}"
+                   onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(229, 231, 235)') { this.style.backgroundColor='rgba(255, 255, 255, 0.1)'; }"
+                   onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.1)') { this.style.backgroundColor=''; }">
+                    <i class="fas fa-tachometer-alt mr-3 text-lg" style="color: #efd856;"></i>
+                    <span>Dashboard</span>
                 </a>
 
                 @if(auth()->user()->role !== 'viewer')
                 <!-- Arsip -->
-                <div x-data="{ open: {{ request()->routeIs('arsip.*') ? 'true' : 'false' }} }" class="mt-1">
+                <div x-data="{ open: {{ request()->routeIs('arsip.*') ? 'true' : 'false' }} }">
                     <button @click="open = !open" 
-                            class="group w-full flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-100 hover:bg-primary-dark hover:text-white">
-                        <i class="fas fa-file-alt mr-3 text-gray-300 group-hover:text-white"></i>
+                            class="group w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
+                            style="color: #e5e7eb;"
+                            onmouseover="this.style.backgroundColor='rgba(255, 255, 255, 0.1)'"
+                            onmouseout="this.style.backgroundColor=''">
+                        <i class="fas fa-file-alt mr-3 text-lg" style="color: #efd856;"></i>
                         <span class="flex-1 text-left">Arsip</span>
-                        <i class="fas fa-chevron-down transition-transform duration-200" :class="open ? 'transform rotate-180' : ''"></i>
+                        <i class="fas fa-chevron-down transition-transform duration-200 text-xs" :class="open ? 'transform rotate-180' : ''"></i>
                     </button>
-                    <div x-show="open" x-transition class="mt-1 space-y-1">
+                    <div x-show="open" x-transition class="mt-2 ml-4 space-y-1">
                         <a href="{{ route('arsip.index') }}" 
-                           class="group flex items-center pl-9 pr-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('arsip.index') ? 'bg-primary-dark text-white' : 'text-gray-200 hover:bg-primary-dark hover:text-white' }}">
+                           class="flex items-center pl-8 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200"
+                           style="{{ request()->routeIs('arsip.index') ? 'background-color: #006b2d; color: white;' : 'color: #d1d5db;' }}"
+                           onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(209, 213, 219)') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }"
+                           onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.05)') { this.style.backgroundColor=''; }">
+                            <i class="fas fa-list mr-2 text-xs" style="color: #efd856;"></i>
                             Daftar Arsip
                         </a>
                         <a href="{{ route('arsip.create') }}" 
-                           class="group flex items-center pl-9 pr-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('arsip.create') ? 'bg-primary-dark text-white' : 'text-gray-200 hover:bg-primary-dark hover:text-white' }}">
+                           class="flex items-center pl-8 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200"
+                           style="{{ request()->routeIs('arsip.create') ? 'background-color: #006b2d; color: white;' : 'color: #d1d5db;' }}"
+                           onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(209, 213, 219)') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }"
+                           onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.05)') { this.style.backgroundColor=''; }">
+                            <i class="fas fa-plus mr-2 text-xs" style="color: #efd856;"></i>
                             Tambah Arsip
                         </a>
                     </div>
@@ -68,28 +88,42 @@
                 @else
                 <!-- View Only Arsip for Viewer -->
                 <a href="{{ route('arsip.index') }}" 
-                   class="mt-1 group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('arsip.*') ? 'bg-primary-dark text-white' : 'text-gray-100 hover:bg-primary-dark hover:text-white' }}">
-                    <i class="fas fa-file-alt mr-3 text-gray-300 group-hover:text-white"></i>
-                    Daftar Arsip
+                   class="group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
+                   style="{{ request()->routeIs('arsip.*') ? 'background-color: #006b2d; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);' : 'color: #e5e7eb;' }}"
+                   onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(229, 231, 235)') { this.style.backgroundColor='rgba(255, 255, 255, 0.1)'; }"
+                   onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.1)') { this.style.backgroundColor=''; }">
+                    <i class="fas fa-file-alt mr-3 text-lg" style="color: #efd856;"></i>
+                    <span>Daftar Arsip</span>
                 </a>
                 @endif
 
                 @if(auth()->user()->role === 'admin')
                 <!-- Master Data -->
-                <div x-data="{ open: {{ request()->routeIs('kategori.*') || request()->routeIs('unit-kerja.*') ? 'true' : 'false' }} }" class="mt-1">
+                <div x-data="{ open: {{ request()->routeIs('kategori.*') || request()->routeIs('unit-kerja.*') ? 'true' : 'false' }} }">
                     <button @click="open = !open" 
-                            class="group w-full flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-100 hover:bg-primary-dark hover:text-white">
-                        <i class="fas fa-database mr-3 text-gray-300 group-hover:text-white"></i>
+                            class="group w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
+                            style="color: #e5e7eb;"
+                            onmouseover="this.style.backgroundColor='rgba(255, 255, 255, 0.1)'"
+                            onmouseout="this.style.backgroundColor=''">
+                        <i class="fas fa-database mr-3 text-lg" style="color: #efd856;"></i>
                         <span class="flex-1 text-left">Master Data</span>
-                        <i class="fas fa-chevron-down transition-transform duration-200" :class="open ? 'transform rotate-180' : ''"></i>
+                        <i class="fas fa-chevron-down transition-transform duration-200 text-xs" :class="open ? 'transform rotate-180' : ''"></i>
                     </button>
-                    <div x-show="open" x-transition class="mt-1 space-y-1">
+                    <div x-show="open" x-transition class="mt-2 ml-4 space-y-1">
                         <a href="{{ route('kategori.index') }}" 
-                           class="group flex items-center pl-9 pr-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('kategori.*') ? 'bg-primary-dark text-white' : 'text-gray-200 hover:bg-primary-dark hover:text-white' }}">
+                           class="flex items-center pl-8 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200"
+                           style="{{ request()->routeIs('kategori.*') ? 'background-color: #006b2d; color: white;' : 'color: #d1d5db;' }}"
+                           onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(209, 213, 219)') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }"
+                           onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.05)') { this.style.backgroundColor=''; }">
+                            <i class="fas fa-folder mr-2 text-xs" style="color: #efd856;"></i>
                             Kategori Arsip
                         </a>
                         <a href="{{ route('unit-kerja.index') }}" 
-                           class="group flex items-center pl-9 pr-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('unit-kerja.*') ? 'bg-primary-dark text-white' : 'text-gray-200 hover:bg-primary-dark hover:text-white' }}">
+                           class="flex items-center pl-8 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200"
+                           style="{{ request()->routeIs('unit-kerja.*') ? 'background-color: #006b2d; color: white;' : 'color: #d1d5db;' }}"
+                           onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(209, 213, 219)') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }"
+                           onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.05)') { this.style.backgroundColor=''; }">
+                            <i class="fas fa-building mr-2 text-xs" style="color: #efd856;"></i>
                             Unit Kerja
                         </a>
                     </div>
@@ -97,31 +131,37 @@
 
                 <!-- User Management -->
                 <a href="{{ route('users.index') }}" 
-                   class="mt-1 group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('users.*') ? 'bg-primary-dark text-white' : 'text-gray-100 hover:bg-primary-dark hover:text-white' }}">
-                    <i class="fas fa-users mr-3 text-gray-300 group-hover:text-white"></i>
-                    Pengguna
+                   class="group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
+                   style="{{ request()->routeIs('users.*') ? 'background-color: #006b2d; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);' : 'color: #e5e7eb;' }}"
+                   onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(229, 231, 235)') { this.style.backgroundColor='rgba(255, 255, 255, 0.1)'; }"
+                   onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.1)') { this.style.backgroundColor=''; }">
+                    <i class="fas fa-users mr-3 text-lg" style="color: #efd856;"></i>
+                    <span>Pengguna</span>
                 </a>
                 @endif
 
                 <!-- Laporan -->
                 <a href="{{ route('laporan.index') }}" 
-                   class="mt-1 group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('laporan.*') ? 'bg-primary-dark text-white' : 'text-gray-100 hover:bg-primary-dark hover:text-white' }}">
-                    <i class="fas fa-chart-bar mr-3 text-gray-300 group-hover:text-white"></i>
-                    Laporan
+                   class="group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
+                   style="{{ request()->routeIs('laporan.*') ? 'background-color: #006b2d; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);' : 'color: #e5e7eb;' }}"
+                   onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(229, 231, 235)') { this.style.backgroundColor='rgba(255, 255, 255, 0.1)'; }"
+                   onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.1)') { this.style.backgroundColor=''; }">
+                    <i class="fas fa-chart-bar mr-3 text-lg" style="color: #efd856;"></i>
+                    <span>Laporan</span>
                 </a>
             </nav>
 
             <!-- User Info -->
-            <div class="absolute bottom-0 w-full px-4 py-4 bg-primary-dark">
-                <div class="flex items-center">
+            <div class="absolute bottom-0 w-full px-4 py-4" style="background-color: #006b2d; border-top: 2px solid #efd856;">
+                <div class="flex items-center space-x-3">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center">
-                            <span class="text-primary font-bold">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                        <div class="w-11 h-11 rounded-full flex items-center justify-center shadow-lg" style="background-color: #efd856;">
+                            <span class="font-bold text-lg" style="color: #008e3c;">{{ substr(auth()->user()->name, 0, 1) }}</span>
                         </div>
                     </div>
-                    <div class="ml-3">
-                        <p class="text-sm font-medium text-white">{{ auth()->user()->name }}</p>
-                        <p class="text-xs text-gray-300 capitalize">{{ auth()->user()->role }}</p>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-white truncate">{{ auth()->user()->name }}</p>
+                        <p class="text-xs capitalize truncate" style="color: #efd856;">{{ auth()->user()->role }}</p>
                     </div>
                 </div>
             </div>

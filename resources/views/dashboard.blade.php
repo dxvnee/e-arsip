@@ -5,61 +5,68 @@
 @section('content')
 <div class="space-y-6">
     <!-- Welcome Section -->
-    <div class="bg-gradient-to-r from-primary to-primary-dark rounded-lg p-6 text-white">
-        <h2 class="text-2xl font-bold mb-2">Selamat Datang, {{ auth()->user()->name }}!</h2>
-        <p class="text-gray-100">Sistem Informasi E-Arsip Dinas Kesehatan</p>
+    <div class="rounded-xl p-8 text-white shadow-lg" style="background: linear-gradient(135deg, #008e3c 0%, #006b2d 100%);">
+        <div class="flex items-center space-x-4">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background-color: #efd856;">
+                <i class="fas fa-hand-sparkles text-3xl" style="color: #008e3c;"></i>
+            </div>
+            <div>
+                <h2 class="text-3xl font-bold mb-1">Selamat Datang, {{ auth()->user()->name }}!</h2>
+                <p class="text-sm" style="color: #efd856;">Sistem Informasi E-Arsip Dinas Kesehatan</p>
+            </div>
+        </div>
     </div>
 
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Total Arsip -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 transform hover:scale-105 transition-transform duration-200" style="border-color: #008e3c;">
             <div class="flex items-center">
-                <div class="flex-shrink-0 bg-primary bg-opacity-10 rounded-lg p-3">
-                    <i class="fas fa-file-alt text-primary text-2xl"></i>
+                <div class="flex-shrink-0 rounded-lg p-4" style="background-color: rgba(0, 142, 60, 0.1);">
+                    <i class="fas fa-file-alt text-3xl" style="color: #008e3c;"></i>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm text-gray-600">Total Arsip</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $stats['total_arsip'] ?? 0 }}</p>
+                    <p class="text-sm font-medium text-gray-600">Total Arsip</p>
+                    <p class="text-3xl font-bold" style="color: #008e3c;">{{ $stats['total_arsip'] ?? 0 }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Arsip Bulan Ini -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 transform hover:scale-105 transition-transform duration-200" style="border-color: #efd856;">
             <div class="flex items-center">
-                <div class="flex-shrink-0 bg-secondary bg-opacity-20 rounded-lg p-3">
-                    <i class="fas fa-calendar-alt text-secondary-dark text-2xl"></i>
+                <div class="flex-shrink-0 rounded-lg p-4" style="background-color: rgba(239, 216, 86, 0.2);">
+                    <i class="fas fa-calendar-alt text-3xl" style="color: #d4b93a;"></i>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm text-gray-600">Arsip Bulan Ini</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $stats['arsip_bulan_ini'] ?? 0 }}</p>
+                    <p class="text-sm font-medium text-gray-600">Arsip Bulan Ini</p>
+                    <p class="text-3xl font-bold" style="color: #d4b93a;">{{ $stats['arsip_bulan_ini'] ?? 0 }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Total Unit Kerja -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500 transform hover:scale-105 transition-transform duration-200">
             <div class="flex items-center">
-                <div class="flex-shrink-0 bg-blue-100 rounded-lg p-3">
-                    <i class="fas fa-building text-blue-600 text-2xl"></i>
+                <div class="flex-shrink-0 bg-blue-100 rounded-lg p-4">
+                    <i class="fas fa-building text-blue-600 text-3xl"></i>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm text-gray-600">Unit Kerja</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $stats['total_unit'] ?? 0 }}</p>
+                    <p class="text-sm font-medium text-gray-600">Unit Kerja</p>
+                    <p class="text-3xl font-bold text-blue-600">{{ $stats['total_unit'] ?? 0 }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Total Pengguna -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500 transform hover:scale-105 transition-transform duration-200">
             <div class="flex items-center">
-                <div class="flex-shrink-0 bg-purple-100 rounded-lg p-3">
-                    <i class="fas fa-users text-purple-600 text-2xl"></i>
+                <div class="flex-shrink-0 bg-purple-100 rounded-lg p-4">
+                    <i class="fas fa-users text-purple-600 text-3xl"></i>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm text-gray-600">Pengguna Aktif</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $stats['total_users'] ?? 0 }}</p>
+                    <p class="text-sm font-medium text-gray-600">Pengguna Aktif</p>
+                    <p class="text-3xl font-bold text-purple-600">{{ $stats['total_users'] ?? 0 }}</p>
                 </div>
             </div>
         </div>
@@ -67,9 +74,9 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Arsip Terbaru -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-800">Arsip Terbaru</h3>
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="px-6 py-4 border-b-2" style="background-color: rgba(0, 142, 60, 0.05); border-color: #008e3c;">
+                <h3 class="text-lg font-bold" style="color: #008e3c;">📄 Arsip Terbaru</h3>
             </div>
             <div class="p-6">
                 <div class="space-y-4 max-h-96 overflow-y-auto">
@@ -94,12 +101,12 @@
         </div>
 
         <!-- Statistik Per Jenis Arsip -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-800">Arsip Per Jenis</h3>
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="px-6 py-4 border-b-2" style="background-color: rgba(239, 216, 86, 0.2); border-color: #efd856;">
+                <h3 class="text-lg font-bold" style="color: #d4b93a;">📊 Arsip Per Jenis</h3>
             </div>
             <div class="p-6">
-                <div class="space-y-3">
+                <div class="space-y-4">
                     @php
                         $jenisLabels = [
                             'surat_masuk' => 'Surat Masuk',
@@ -114,15 +121,15 @@
                     @forelse($arsipPerJenis ?? [] as $jenis)
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="w-2 h-2 bg-primary rounded-full mr-2"></div>
-                                <span class="text-sm text-gray-700">{{ $jenisLabels[$jenis->jenis_arsip] ?? $jenis->jenis_arsip }}</span>
+                                <div class="w-3 h-3 rounded-full mr-3" style="background-color: #008e3c;"></div>
+                                <span class="text-sm font-medium text-gray-700">{{ $jenisLabels[$jenis->jenis_arsip] ?? $jenis->jenis_arsip }}</span>
                             </div>
-                            <div class="flex items-center space-x-2">
-                                <div class="w-32 bg-gray-200 rounded-full h-2">
-                                    <div class="bg-primary h-2 rounded-full" 
-                                         style="width: {{ $totalArsip > 0 ? ($jenis->total / $totalArsip * 100) : 0 }}%"></div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-32 bg-gray-200 rounded-full h-3">
+                                    <div class="h-3 rounded-full" 
+                                         style="background-color: #008e3c; width: {{ $totalArsip > 0 ? ($jenis->total / $totalArsip * 100) : 0 }}%"></div>
                                 </div>
-                                <span class="text-sm font-medium text-gray-800 w-10 text-right">{{ $jenis->total }}</span>
+                                <span class="text-sm font-bold w-10 text-right" style="color: #008e3c;">{{ $jenis->total }}</span>
                             </div>
                         </div>
                     @empty
@@ -134,9 +141,9 @@
     </div>
 
     <!-- Aktivitas Terbaru -->
-    <div class="bg-white rounded-lg shadow">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-semibold text-gray-800">Aktivitas Terbaru</h3>
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="px-6 py-4 border-b-2" style="background-color: rgba(0, 142, 60, 0.05); border-color: #008e3c;">
+            <h3 class="text-lg font-bold" style="color: #008e3c;">🕒 Aktivitas Terbaru</h3>
         </div>
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
