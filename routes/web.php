@@ -7,6 +7,7 @@ use App\Http\Controllers\KategoriArsipController;
 use App\Http\Controllers\UnitKerjaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\DisposisiController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root to login
@@ -28,6 +29,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('arsip', ArsipController::class);
     Route::get('arsip/{arsip}/download', [ArsipController::class, 'download'])->name('arsip.download');
     
+    // Disposisi
+    Route::resource('disposisi', DisposisiController::class)->except(['edit', 'update', 'destroy']);
+    Route::post('disposisi/{disposisi}/update-status', [DisposisiController::class, 'updateStatus'])->name('disposisi.update-status');
+    
     // Admin Only Routes
     Route::middleware(['role:admin'])->group(function () {
         // Master Data
@@ -40,7 +45,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Laporan - All authenticated users can access
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
-    Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
+    Route::post('/laporan/arsip-masuk-keluar', [LaporanController::class, 'arsipMasukKeluar'])->name('laporan.arsip-masuk-keluar');
+    Route::get('/laporan/statistik', [LaporanController::class, 'statistikArsip'])->name('laporan.statistik');
+    Route::post('/laporan/aktivitas', [LaporanController::class, 'aktivitas'])->name('laporan.aktivitas');
+    Route::post('/laporan/disposisi', [LaporanController::class, 'disposisi'])->name('laporan.disposisi');
 });
 
 require __DIR__.'/auth.php';
