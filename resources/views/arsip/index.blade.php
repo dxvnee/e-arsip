@@ -3,6 +3,35 @@
 @section('title', 'Daftar Arsip')
 
 @section('content')
+<!-- Success/Error Messages -->
+@if(session('success'))
+<div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-lg shadow-md animate-slideDown">
+    <div class="flex items-center">
+        <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
+        <div>
+            <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
+        </div>
+        <button onclick="this.parentElement.parentElement.remove()" class="ml-auto text-green-500 hover:text-green-700">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+@endif
+
+@if(session('error'))
+<div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg shadow-md animate-slideDown">
+    <div class="flex items-center">
+        <i class="fas fa-exclamation-circle text-red-500 text-xl mr-3"></i>
+        <div>
+            <p class="text-sm font-medium text-red-800">{{ session('error') }}</p>
+        </div>
+        <button onclick="this.parentElement.parentElement.remove()" class="ml-auto text-red-500 hover:text-red-700">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+@endif
+
 <div class="space-y-6">
     <!-- Header & Search -->
     <div class="bg-white rounded-xl shadow-lg p-6">
@@ -124,6 +153,62 @@
         </form>
     </div>
 
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Total Arsip -->
+        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4" style="border-color: #008e3c;">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Arsip</p>
+                    <p class="text-2xl font-bold" style="color: #008e3c;">{{ $arsip->total() }}</p>
+                </div>
+                <div class="w-12 h-12 rounded-full flex items-center justify-center"
+                     style="background-color: rgba(0, 142, 60, 0.1);">
+                    <i class="fas fa-archive text-xl" style="color: #008e3c;"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Arsip Aktif -->
+        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Aktif</p>
+                    <p class="text-2xl font-bold text-green-600">{{ \App\Models\Arsip::where('status', 'aktif')->count() }}</p>
+                </div>
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-check-circle text-xl text-green-600"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Arsip Inaktif -->
+        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Inaktif</p>
+                    <p class="text-2xl font-bold text-yellow-600">{{ \App\Models\Arsip::where('status', 'inaktif')->count() }}</p>
+                </div>
+                <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-pause-circle text-xl text-yellow-600"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- File Digital -->
+        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">File Digital</p>
+                    <p class="text-2xl font-bold text-blue-600">{{ \App\Models\Arsip::whereNotNull('file_arsip')->count() }}</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-file text-xl text-blue-600"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Arsip List -->
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
         <div class="px-6 py-4 border-b-2" style="background-color: rgba(0, 142, 60, 0.05); border-color: #008e3c;">
@@ -149,12 +234,30 @@
                     @foreach($arsip as $item)
                     <tr class="hover:bg-gray-50 transition-colors">
                         <td class="px-6 py-4">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-900">{{ $item->nomor_arsip }}</p>
-                                <p class="text-sm text-gray-600">{{ Str::limit($item->judul_arsip, 50) }}</p>
-                                @if($item->nomor_surat)
-                                <p class="text-xs text-gray-500 mt-1">No. Surat: {{ $item->nomor_surat }}</p>
+                            <div class="flex items-start space-x-3">
+                                @if($item->file_arsip)
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 rounded-lg flex items-center justify-center"
+                                         style="background-color: rgba(0, 142, 60, 0.1);">
+                                        <i class="fas fa-file-{{ $item->file_type == 'pdf' ? 'pdf' : ($item->file_type == 'doc' || $item->file_type == 'docx' ? 'word' : ($item->file_type == 'xls' || $item->file_type == 'xlsx' ? 'excel' : 'image')) }} text-xl" style="color: #008e3c;"></i>
+                                    </div>
+                                </div>
                                 @endif
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-semibold text-gray-900">{{ $item->nomor_arsip }}</p>
+                                    <p class="text-sm text-gray-600 truncate" title="{{ $item->judul_arsip }}">{{ Str::limit($item->judul_arsip, 50) }}</p>
+                                    @if($item->nomor_surat)
+                                    <p class="text-xs text-gray-500 mt-1">
+                                        <i class="fas fa-hashtag mr-1"></i>{{ $item->nomor_surat }}
+                                    </p>
+                                    @endif
+                                    @if($item->file_arsip)
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        <i class="fas fa-paperclip mr-1"></i>
+                                        {{ number_format($item->file_size / 1024 / 1024, 2) }} MB
+                                    </p>
+                                    @endif
+                                </div>
                             </div>
                         </td>
                         <td class="px-6 py-4">
@@ -181,23 +284,55 @@
                                 {{ ucfirst($item->status) }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-sm font-medium space-x-2">
-                            <a href="{{ route('arsip.show', $item) }}" 
-                               class="text-blue-600 hover:text-blue-900" title="Lihat Detail">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                            @if(auth()->user()->role !== 'viewer')
-                            <a href="{{ route('arsip.edit', $item) }}" 
-                               class="text-yellow-600 hover:text-yellow-900" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            @endif
-                            @if($item->file_arsip)
-                            <a href="{{ route('arsip.download', $item) }}" 
-                               class="hover:text-green-900" style="color: #008e3c;" title="Download">
-                                <i class="fas fa-download"></i>
-                            </a>
-                            @endif
+                        <td class="px-6 py-4">
+                            <div class="flex items-center space-x-2">
+                                <!-- View Button -->
+                                <a href="{{ route('arsip.show', $item->id) }}" 
+                                   class="inline-flex items-center px-3 py-1.5 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-xs font-medium"
+                                   title="Lihat Detail">
+                                    <i class="fas fa-eye mr-1.5"></i>
+                                    <span class="hidden lg:inline">Detail</span>
+                                </a>
+                                
+                                @if(auth()->user()->role !== 'viewer')
+                                <!-- Edit Button -->
+                                <a href="{{ route('arsip.edit', $item->id) }}" 
+                                   class="inline-flex items-center px-3 py-1.5 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors text-xs font-medium"
+                                   title="Edit Arsip">
+                                    <i class="fas fa-edit mr-1.5"></i>
+                                    <span class="hidden lg:inline">Edit</span>
+                                </a>
+                                @endif
+                                
+                                @if(auth()->user()->role === 'admin')
+                                <!-- Delete Button -->
+                                <form action="{{ route('arsip.destroy', $item->id) }}" 
+                                      method="POST" 
+                                      class="inline"
+                                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus arsip ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            class="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-xs font-medium"
+                                            title="Hapus Arsip">
+                                        <i class="fas fa-trash mr-1.5"></i>
+                                        <span class="hidden lg:inline">Hapus</span>
+                                    </button>
+                                </form>
+                                @endif
+
+                                @if($item->file_arsip)
+                                    <!-- Download Button (icon only) -->
+                                    <a href="{{ route('arsip.download', $item->id) }}" 
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-white hover:shadow-lg transition-all"
+                                    style="background-color: #008e3c;"
+                                    title="Download File">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+
+                                @endif
+
+                            </div>
                         </td>
                     </tr>
                     @endforeach
@@ -219,3 +354,75 @@
     </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-slideDown {
+        animation: slideDown 0.3s ease-out;
+    }
+    
+    /* Hover effect for table rows */
+    tbody tr:hover {
+        background-color: rgba(0, 142, 60, 0.02);
+    }
+    
+    /* Smooth transitions */
+    a, button {
+        transition: all 0.2s ease;
+    }
+    
+    /* File type icon colors */
+    .fa-file-pdf {
+        color: #dc2626;
+    }
+    
+    .fa-file-word {
+        color: #2563eb;
+    }
+    
+    .fa-file-excel {
+        color: #16a34a;
+    }
+    
+    .fa-file-image {
+        color: #9333ea;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    // Auto-hide success/error messages after 5 seconds
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.animate-slideDown');
+        alerts.forEach(function(alert) {
+            alert.style.transition = 'opacity 0.5s ease';
+            alert.style.opacity = '0';
+            setTimeout(function() {
+                alert.remove();
+            }, 500);
+        });
+    }, 5000);
+    
+    // Confirm delete with sweet alert style
+    document.querySelectorAll('form[onsubmit*="confirm"]').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (confirm('⚠️ Apakah Anda yakin ingin menghapus arsip ini?\n\nTindakan ini tidak dapat dibatalkan!')) {
+                this.submit();
+            }
+        });
+    });
+</script>
+@endpush

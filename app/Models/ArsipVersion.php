@@ -15,18 +15,16 @@ class ArsipVersion extends Model
     protected $fillable = [
         'arsip_id',
         'version_number',
-        'judul_arsip',
-        'deskripsi',
-        'file_arsip',
+        'file_path',
         'file_type',
         'file_size',
-        'updated_by',
-        'change_notes',
-        'metadata_changes',
+        'user_id',
+        'change_note',
+        'metadata',
     ];
     
     protected $casts = [
-        'metadata_changes' => 'array',
+        'metadata' => 'array',
         'file_size' => 'integer',
     ];
     
@@ -39,11 +37,11 @@ class ArsipVersion extends Model
     }
     
     /**
-     * Relationship with User (updater)
+     * Relationship with User (creator of this version)
      */
-    public function updater()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'updated_by');
+        return $this->belongsTo(User::class, 'user_id');
     }
     
     /**
@@ -51,8 +49,8 @@ class ArsipVersion extends Model
      */
     public function getFileUrlAttribute()
     {
-        if ($this->file_arsip) {
-            return Storage::url($this->file_arsip);
+        if ($this->file_path) {
+            return Storage::url($this->file_path);
         }
         return null;
     }

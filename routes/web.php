@@ -27,6 +27,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Arsip Management
     Route::resource('arsip', ArsipController::class);
+    Route::get('/arsip/{arsip}/download', [ArsipController::class, 'download'])->name('arsip.download');
+    Route::get('/arsip/{arsip}/preview', [ArsipController::class, 'preview'])->name('arsip.preview');
+    Route::get('/arsip/{arsip}/versions', [ArsipController::class, 'versions'])->name('arsip.versions');
+    Route::get('/arsip/{arsip}/version/{version}/download', [ArsipController::class, 'downloadVersion'])->name('arsip.version.download');
     Route::get('arsip/{arsip}/download', [ArsipController::class, 'download'])->name('arsip.download');
     
     // Disposisi

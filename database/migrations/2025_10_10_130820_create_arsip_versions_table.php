@@ -15,14 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('arsip_id')->constrained('arsip')->onDelete('cascade');
             $table->integer('version_number');
-            $table->string('judul_arsip');
-            $table->text('deskripsi')->nullable();
-            $table->string('file_arsip')->nullable();
+            $table->string('file_path'); // Path to file
             $table->string('file_type', 10)->nullable();
             $table->bigInteger('file_size')->nullable();
-            $table->foreignId('updated_by')->constrained('users');
-            $table->text('change_notes')->nullable();
-            $table->json('metadata_changes')->nullable();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // User who made this version
+            $table->text('change_note')->nullable(); // Note about what changed
+            $table->json('metadata')->nullable(); // Store metadata snapshot
             $table->timestamps();
             
             $table->index(['arsip_id', 'version_number']);

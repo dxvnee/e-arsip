@@ -103,6 +103,22 @@ class Arsip extends Model
     }
     
     /**
+     * Relationship with User (alias for creator)
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    
+    /**
+     * Relationship with ArsipVersion
+     */
+    public function versions()
+    {
+        return $this->hasMany(ArsipVersion::class);
+    }
+    
+    /**
      * Scope for active arsip
      */
     public function scopeActive($query)
