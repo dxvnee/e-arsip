@@ -38,13 +38,21 @@
             }
         }
         
-        .logo-shine {
-            animation: shine 2s infinite;
+        .logo-pulse {
+            animation: pulse 2s ease-in-out infinite;
         }
         
-        @keyframes shine {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        .logo-glow {
+            box-shadow: 0 0 30px rgba(239, 216, 86, 0.4), 0 0 60px rgba(239, 216, 86, 0.2);
         }
         
         .input-group {
@@ -98,6 +106,11 @@
         .password-toggle:hover {
             color: #008e3c;
         }
+        
+        .divider-line {
+            background: linear-gradient(90deg, transparent, #efd856, transparent);
+            height: 2px;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -105,15 +118,51 @@
         <div class="login-container w-full max-w-md">
             <!-- Logo & Title -->
             <div class="text-center mb-8">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-4 logo-shine"
-                     style="background-color: #efd856;">
-                    <i class="fas fa-archive text-4xl" style="color: #008e3c;"></i>
+                <!-- Logo Container -->
+                <div class="inline-block relative mb-6">
+                    <!-- Glow Effect Background -->
+                    <div class="absolute inset-0 rounded-full opacity-20 blur-2xl" 
+                         style="background: radial-gradient(circle, #efd856 0%, transparent 70%);"></div>
+                    
+                    <!-- Main Logo Circle -->
+                    <div class="relative logo-pulse">
+                        <div class="w-28 h-28 rounded-full flex items-center justify-center logo-glow shadow-2xl mx-auto"
+                             style="background: linear-gradient(135deg, #efd856 0%, #f4e07d 50%, #efd856 100%);">
+                            <!-- Inner Circle -->
+                            <div class="w-24 h-24 rounded-full flex items-center justify-center"
+                                 style="background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);">
+                                <!-- Icon -->
+                                <div class="relative">
+                                    <i class="fas fa-archive text-5xl" style="color: #008e3c;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Security Badge -->
+                        <div class="absolute -bottom-1 -right-1 w-11 h-11 rounded-full flex items-center justify-center shadow-xl"
+                             style="background: linear-gradient(135deg, #008e3c 0%, #006b2e 100%);">
+                            <i class="fas fa-shield-alt text-white text-lg"></i>
+                        </div>
+                    </div>
                 </div>
-                <h1 class="text-3xl font-bold text-white mb-2">
+                
+                <!-- Title -->
+                <h1 class="text-3xl font-bold text-white mb-3">
                     Sistem E-Arsip
                 </h1>
+                
+                <!-- Subtitle with Divider -->
+                <div class="flex items-center justify-center space-x-3 mb-2">
+                    <div class="w-12 h-0.5 rounded" style="background-color: #efd856;"></div>
+                    <p class="text-white text-base font-semibold tracking-wide">
+                        DINAS KESEHATAN
+                    </p>
+                    <div class="w-12 h-0.5 rounded" style="background-color: #efd856;"></div>
+                </div>
+                
+                <!-- Description -->
                 <p class="text-gray-200 text-sm">
-                    Dinas Kesehatan
+                    Sistem Informasi Manajemen Arsip Digital
                 </p>
             </div>
             
@@ -246,6 +295,9 @@
             <div class="text-center mt-6">
                 <p class="text-sm text-gray-200">
                     &copy; {{ date('Y') }} Dinas Kesehatan. All rights reserved.
+                </p>
+                <p class="text-xs text-gray-300 mt-1">
+                    Version 1.0.0
                 </p>
             </div>
         </div>

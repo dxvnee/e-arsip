@@ -234,27 +234,13 @@
                     @foreach($arsip as $item)
                     <tr class="hover:bg-gray-50 transition-colors">
                         <td class="px-6 py-4">
-                            <div class="flex items-start space-x-3">
-                                @if($item->file_arsip)
-                                <div class="flex-shrink-0">
-                                    <div class="w-10 h-10 rounded-lg flex items-center justify-center"
-                                         style="background-color: rgba(0, 142, 60, 0.1);">
-                                        <i class="fas fa-file-{{ $item->file_type == 'pdf' ? 'pdf' : ($item->file_type == 'doc' || $item->file_type == 'docx' ? 'word' : ($item->file_type == 'xls' || $item->file_type == 'xlsx' ? 'excel' : 'image')) }} text-xl" style="color: #008e3c;"></i>
-                                    </div>
-                                </div>
-                                @endif
+                            <div class="flex items-start justify-center items-center space-x-3">
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm font-semibold text-gray-900">{{ $item->nomor_arsip }}</p>
                                     <p class="text-sm text-gray-600 truncate" title="{{ $item->judul_arsip }}">{{ Str::limit($item->judul_arsip, 50) }}</p>
                                     @if($item->nomor_surat)
                                     <p class="text-xs text-gray-500 mt-1">
                                         <i class="fas fa-hashtag mr-1"></i>{{ $item->nomor_surat }}
-                                    </p>
-                                    @endif
-                                    @if($item->file_arsip)
-                                    <p class="text-xs text-gray-400 mt-1">
-                                        <i class="fas fa-paperclip mr-1"></i>
-                                        {{ number_format($item->file_size / 1024 / 1024, 2) }} MB
                                     </p>
                                     @endif
                                 </div>
