@@ -16,6 +16,9 @@
             </div>
         </div>
     </div>
+    <div class = "rounded-xl p-8 border-2">
+        <h2 class="text-3xl font-bold mb-1">Selamat Datang, {{ auth()->user()->name }}!</h2>
+    </div>
 
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -126,7 +129,7 @@
                             </div>
                             <div class="flex items-center space-x-3">
                                 <div class="w-32 bg-gray-200 rounded-full h-3">
-                                    <div class="h-3 rounded-full" 
+                                    <div class="h-3 rounded-full"
                                          style="background-color: #008e3c; width: {{ $totalArsip > 0 ? ($jenis->total / $totalArsip * 100) : 0 }}%"></div>
                                 </div>
                                 <span class="text-sm font-bold w-10 text-right" style="color: #008e3c;">{{ $jenis->total }}</span>
