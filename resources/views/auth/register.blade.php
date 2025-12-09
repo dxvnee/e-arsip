@@ -1,138 +1,13 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Register - Sistem E-Arsip Dinkes</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Vite Assets -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    <style>
-        body {
-            background: linear-gradient(135deg, #008e3c 0%, #006b2e 50%, #004d21 100%);
-            min-height: 100vh;
-            font-family: 'Figtree', sans-serif;
-        }
-        
-        .register-container {
-            animation: fadeIn 0.6s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .logo-pulse {
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-        
-        .logo-glow {
-            box-shadow: 0 0 30px rgba(239, 216, 86, 0.4), 0 0 60px rgba(239, 216, 86, 0.2);
-        }
-        
-        .input-group {
-            position: relative;
-        }
-        
-        .input-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6b7280;
-            pointer-events: none;
-        }
-        
-        .input-field {
-            padding-left: 40px;
-        }
-        
-        .btn-register {
-            background: linear-gradient(135deg, #008e3c 0%, #006b2e 100%);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-register:hover {
-            background: linear-gradient(135deg, #006b2e 0%, #004d21 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 142, 60, 0.3);
-        }
-        
-        .alert {
-            animation: slideDown 0.3s ease-out;
-        }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .password-toggle {
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        
-        .password-toggle:hover {
-            color: #008e3c;
-        }
-        
-        .role-card {
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        
-        .role-card:hover {
-            border-color: #008e3c;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 142, 60, 0.2);
-        }
-        
-        .role-card.selected {
-            border-color: #008e3c;
-            background-color: #f0fdf4;
-        }
-        
-        .password-strength {
-            height: 4px;
-            border-radius: 2px;
-            transition: all 0.3s;
-        }
-    </style>
-</head>
-<body class="antialiased">
-    <div class="min-h-screen flex items-center justify-center px-4 py-12">
+@extends('layouts.main')
+
+@section('title', 'Register - Sistem E-Arsip Dinkes')
+
+@push('styles') 
+@vite('resources/css/register.css')
+@endpush
+
+@section('content')
+<div class="min-h-screen flex items-center justify-center px-4 py-12">
         <div class="register-container w-full max-w-2xl">
             <!-- Logo & Title -->
             <div class="text-center mb-8">
@@ -400,97 +275,11 @@
             </div>
         </div>
     </div>
-    
-    <script>
-        function togglePassword(fieldId) {
-            const passwordInput = document.getElementById(fieldId);
-            const toggleIcon = fieldId === 'password' ? document.getElementById('toggleIconPassword') : document.getElementById('toggleIconConfirm');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
-        
-        function selectRole(role) {
-            // Remove selected class from all cards
-            document.querySelectorAll('.role-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            
-            // Add selected class to clicked card
-            event.currentTarget.classList.add('selected');
-            
-            // Check the radio button
-            document.getElementById('role_' + role).checked = true;
-        }
-        
-        function checkPasswordStrength() {
-            const password = document.getElementById('password').value;
-            const strengthBar = document.getElementById('passwordStrength');
-            const strengthText = document.getElementById('strengthText');
-            
-            let strength = 0;
-            if (password.length >= 8) strength++;
-            if (password.match(/[a-z]+/)) strength++;
-            if (password.match(/[A-Z]+/)) strength++;
-            if (password.match(/[0-9]+/)) strength++;
-            if (password.match(/[$@#&!]+/)) strength++;
-            
-            switch(strength) {
-                case 0:
-                case 1:
-                    strengthBar.style.width = '20%';
-                    strengthBar.style.backgroundColor = '#ef4444';
-                    strengthText.textContent = 'Kekuatan password: Sangat Lemah';
-                    strengthText.style.color = '#ef4444';
-                    break;
-                case 2:
-                    strengthBar.style.width = '40%';
-                    strengthBar.style.backgroundColor = '#f97316';
-                    strengthText.textContent = 'Kekuatan password: Lemah';
-                    strengthText.style.color = '#f97316';
-                    break;
-                case 3:
-                    strengthBar.style.width = '60%';
-                    strengthBar.style.backgroundColor = '#eab308';
-                    strengthText.textContent = 'Kekuatan password: Cukup';
-                    strengthText.style.color = '#eab308';
-                    break;
-                case 4:
-                    strengthBar.style.width = '80%';
-                    strengthBar.style.backgroundColor = '#84cc16';
-                    strengthText.textContent = 'Kekuatan password: Kuat';
-                    strengthText.style.color = '#84cc16';
-                    break;
-                case 5:
-                    strengthBar.style.width = '100%';
-                    strengthBar.style.backgroundColor = '#22c55e';
-                    strengthText.textContent = 'Kekuatan password: Sangat Kuat';
-                    strengthText.style.color = '#22c55e';
-                    break;
-            }
-        }
-        
-        // Set default role if exists
-        document.addEventListener('DOMContentLoaded', function() {
-            const selectedRole = document.querySelector('input[name="role"]:checked');
-            if (selectedRole) {
-                selectedRole.parentElement.classList.add('selected');
-            }
-        });
-        
-        // Form validation feedback
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            const submitBtn = this.querySelector('button[type="submit"]');
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Memproses...';
-            submitBtn.disabled = true;
-        });
-    </script>
-</body>
-</html>
+
+    @push('scripts')
+    @vite('resources/js/register.js')
+    @endpush
+
+
+@endsection
+
