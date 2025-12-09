@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.auth')
 
 @section('title', 'Login - Sistem E-Arsip Dinkes')
 
@@ -98,10 +98,9 @@
                 <form method="POST" action="{{ route('login') }}" id="loginForm">
                     @csrf
                     
-                    <!-- Email -->
                     <div class="mb-5">
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email Address
+                            Username
                         </label>
                         <div class="input-group">
                             <div class="input-icon">
@@ -113,7 +112,7 @@
                                 name="email"
                                 value="{{ old('email') }}"
                                 class="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition @error('email') border-red-500 @enderror"
-                                placeholder="nama@email.com"
+                                placeholder="username"
                                 required 
                                 autofocus
                                 autocomplete="username">
@@ -134,7 +133,7 @@
                                 id="password" 
                                 name="password"
                                 class="input-field w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition @error('password') border-red-500 @enderror"
-                                placeholder="••••••••"
+                                placeholder="assword"
                                 required
                                 autocomplete="current-password">
                             <div class="absolute right-3 top-1/2 transform -translate-y-1/2 password-toggle" onclick="togglePassword()">
@@ -155,12 +154,7 @@
                             <span class="ml-2 text-sm text-gray-600">Ingat Saya</span>
                         </label>
                         
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-sm font-medium hover:underline"
-                               style="color: #008e3c;">
-                                Lupa Password?
-                            </a>
-                        @endif
+                    
                     </div>
                     
                     <!-- Login Button -->

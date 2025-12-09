@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.auth')
 
 @section('title', 'Register - Sistem E-Arsip Dinkes')
 
