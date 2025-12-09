@@ -87,3 +87,7 @@ document.getElementById('registerForm').addEventListener('submit', function (e) 
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Memproses...';
     submitBtn.disabled = true;
 });
+
+window.checkPasswordStrength = checkPasswordStrength;
+window.togglePassword = togglePassword;
+

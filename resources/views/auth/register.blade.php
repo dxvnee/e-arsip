@@ -276,10 +276,10 @@
         </div>
     </div>
 
-    @push('scripts')
-    @vite('resources/js/register.js')
-    @endpush
-
 
 @endsection
+
+@push('scripts')
+    @vite('resources/js/register.js')
+    @endpush
 
