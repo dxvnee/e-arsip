@@ -25,6 +25,8 @@
 </head>
 
 <body class="font-sans antialiased bg-gray-50">
+
+
     <div x-data="{ sidebarOpen: false }" class="flex h-screen">
         <!-- Sidebar -->
         <div :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
@@ -32,7 +34,7 @@
             style="background-color: #008e3c;">
 
             <!-- Logo -->
-            <div class="flex items-center justify-center h-20 shadow-lg" style="background-color: #006b2d;">
+            <div class="flex items-center justify-between h-20 px-4 shadow-lg" style="background-color: #006b2d;">
                 <div class="flex items-center space-x-3">
                     <div class="w-12 h-12 rounded-full flex items-center justify-center"
                         style="background-color: #efd856;">
@@ -43,6 +45,10 @@
                         <div class="text-xs" style="color: #efd856;">Dinas Kesehatan</div>
                     </div>
                 </div>
+                <!-- Close Button (Mobile) -->
+                <button @click="sidebarOpen = false" class="text-white focus:outline-none lg:hidden">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
             </div>
 
             <!-- Navigation -->
@@ -80,7 +86,7 @@
                             </a>
                             <a href="{{ route('arsip.create') }}"
                                 class="flex items-center pl-8 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200"
-                                style="{{ request()->routeIs('arsip.create') ? 'background-color: #006b2d; color: white;' : 'color: #d1d5db;' }}"
+                                style="{{ request()->routeIs('arsip.create') ? 'background-color: #007b2d; color: white;' : 'color: #d1d5db;' }}"
                                 onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(209, 213, 219)') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }"
                                 onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.05)') { this.style.backgroundColor=''; }">
                                 <i class="fas fa-plus mr-2 text-xs" style="color: #efd856;"></i>
@@ -97,50 +103,6 @@
                         onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.1)') { this.style.backgroundColor=''; }">
                         <i class="fas fa-file-alt mr-3 text-lg" style="color: #efd856;"></i>
                         <span>Daftar Arsip</span>
-                    </a>
-                @endif
-
-                @if(auth()->user()->role === 'admin')
-                    <!-- Master Data -->
-                    <div
-                        x-data="{ open: {{ request()->routeIs('kategori.*') || request()->routeIs('unit-kerja.*') ? 'true' : 'false' }} }">
-                        <button @click="open = !open"
-                            class="group w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
-                            style="color: #e5e7eb;" onmouseover="this.style.backgroundColor='rgba(255, 255, 255, 0.1)'"
-                            onmouseout="this.style.backgroundColor=''">
-                            <i class="fas fa-database mr-3 text-lg" style="color: #efd856;"></i>
-                            <span class="flex-1 text-left">Master Data</span>
-                            <i class="fas fa-chevron-down transition-transform duration-200 text-xs"
-                                :class="open ? 'transform rotate-180' : ''"></i>
-                        </button>
-                        <div x-show="open" x-transition class="mt-2 ml-4 space-y-1">
-                            <a href="{{ route('kategori.index') }}"
-                                class="flex items-center pl-8 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200"
-                                style="{{ request()->routeIs('kategori.*') ? 'background-color: #006b2d; color: white;' : 'color: #d1d5db;' }}"
-                                onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(209, 213, 219)') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }"
-                                onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.05)') { this.style.backgroundColor=''; }">
-                                <i class="fas fa-folder mr-2 text-xs" style="color: #efd856;"></i>
-                                Kategori Arsip
-                            </a>
-                            <a href="{{ route('unit-kerja.index') }}"
-                                class="flex items-center pl-8 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200"
-                                style="{{ request()->routeIs('unit-kerja.*') ? 'background-color: #006b2d; color: white;' : 'color: #d1d5db;' }}"
-                                onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(209, 213, 219)') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }"
-                                onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.05)') { this.style.backgroundColor=''; }">
-                                <i class="fas fa-building mr-2 text-xs" style="color: #efd856;"></i>
-                                Unit Kerja
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- User Management -->
-                    <a href="{{ route('users.index') }}"
-                        class="group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
-                        style="{{ request()->routeIs('users.*') ? 'background-color: #006b2d; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);' : 'color: #e5e7eb;' }}"
-                        onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(229, 231, 235)') { this.style.backgroundColor='rgba(255, 255, 255, 0.1)'; }"
-                        onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.1)') { this.style.backgroundColor=''; }">
-                        <i class="fas fa-users mr-3 text-lg" style="color: #efd856;"></i>
-                        <span>Pengguna</span>
                     </a>
                 @endif
 
@@ -248,7 +210,9 @@
                         </div>
                     @endif
 
-                    @yield('content')
+                    <div class="page-enter min-h-screen">
+                        @yield('content')
+                    </div>
                 </div>
             </main>
         </div>

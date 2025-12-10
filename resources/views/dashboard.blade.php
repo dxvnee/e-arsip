@@ -16,9 +16,6 @@
             </div>
         </div>
     </div>
-    <div class = "rounded-xl p-8 border-2">
-        <h2 class="text-3xl font-bold mb-1">Selamat Datang, {{ auth()->user()->name }}!</h2>
-    </div>
 
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

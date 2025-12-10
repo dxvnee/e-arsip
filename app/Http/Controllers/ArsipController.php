@@ -20,7 +20,7 @@ class ArsipController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Arsip::with(['kategori', 'unitKerja', 'creator']);
+        $query = Arsip::with(relations: ['kategori', 'unitKerja', 'creator']);
 
         // Search
         if ($request->filled('search')) {

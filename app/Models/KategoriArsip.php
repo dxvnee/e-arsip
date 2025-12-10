@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class KategoriArsip extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'kategori_arsip';
-    
+
     protected $fillable = [
         'kode_kategori',
         'nama_kategori',
@@ -20,12 +20,12 @@ class KategoriArsip extends Model
         'warna_label',
         'is_active',
     ];
-    
+
     protected $casts = [
         'is_active' => 'boolean',
         'masa_retensi' => 'integer',
     ];
-    
+
     /**
      * Relationship with Arsip
      */
@@ -33,7 +33,7 @@ class KategoriArsip extends Model
     {
         return $this->hasMany(Arsip::class, 'kategori_id');
     }
-    
+
     /**
      * Scope for active kategori
      */
@@ -41,7 +41,7 @@ class KategoriArsip extends Model
     {
         return $query->where('is_active', true);
     }
-    
+
     /**
      * Get badge color based on security level
      */
@@ -53,7 +53,7 @@ class KategoriArsip extends Model
             'rahasia' => ['color' => 'bg-yellow-100 text-yellow-800', 'label' => 'Rahasia'],
             'sangat_rahasia' => ['color' => 'bg-red-100 text-red-800', 'label' => 'Sangat Rahasia'],
         ];
-        
+
         return $badges[$this->tingkat_keamanan] ?? $badges['internal'];
     }
 }
