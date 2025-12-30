@@ -16,18 +16,21 @@ return new class extends Migration
             $table->foreignId('berkas_arsip_id')->constrained('berkas_arsip')->onDelete('cascade');
             $table->string('nomor_item', 100);
             $table->text('uraian_item');
-            $table->date('tanggal_arsip')->nullable();
-            $table->integer('jumlah')->default(1);
-            $table->string('satuan', 50)->default('lembar');
-            $table->enum('kondisi', ['Baik', 'Rusak Ringan', 'Rusak Berat'])->default('Baik');
+            $table->string('nomor_surat')->nullable();
+            $table->date('tanggal_surat')->nullable();
+            $table->string('asal_surat')->nullable();
+            $table->integer('jumlah_eksemplar')->default(1);
+            $table->string('tingkat_perkembangan')->default('Asli');
+            $table->string('jenis_fisik')->default('Tekstual');
+            $table->string('kondisi_fisik')->default('Baik');
             $table->text('keterangan')->nullable();
             $table->string('file_path')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             // Indexes
-            $table->index('tanggal_arsip');
-            $table->index('kondisi');
+            $table->index('nomor_item');
+            $table->index('tanggal_surat');
         });
     }
 

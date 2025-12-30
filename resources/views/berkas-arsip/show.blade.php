@@ -123,7 +123,7 @@
                             <div class="space-y-4">
                                 @foreach($itemList as $item)
                                     <div
-                                        class="flex items-start p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-100">
+                                        class="flex items-start p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-100 group">
                                         <div class="flex-shrink-0 mr-4">
                                             <div
                                                 class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-green-600">
@@ -131,15 +131,57 @@
                                             </div>
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <div class="flex justify-between">
-                                                <p class="text-sm font-bold text-gray-900 truncate">{{ $item->nomor_item }}</p>
-                                                <span class="text-xs text-gray-500">{{ $item->formatted_tanggal }}</span>
+                                            <div class="flex justify-between items-start">
+                                                <div>
+                                                    <p class="text-sm font-bold text-gray-900">Item #{{ $item->nomor_item }}</p>
+                                                    @if($item->nomor_surat)
+                                                        <p class="text-xs text-gray-500">No. Surat: {{ $item->nomor_surat }}</p>
+                                                    @endif
+                                                </div>
+                                                <div class="flex items-center space-x-2">
+                                                    <span class="text-xs text-gray-500">{{ $item->formatted_tanggal }}</span>
+
+                                                    <!-- Actions -->
+                                                    <div class="hidden group-hover:flex items-center space-x-1 ml-2">
+                                                        <a href="{{ route('item-arsip.edit', $item) }}"
+                                                            class="text-yellow-600 hover:text-yellow-800 p-1" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <form action="{{ route('item-arsip.destroy', $item) }}" method="POST"
+                                                            class="inline" onsubmit="return confirm('Hapus item ini?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="text-red-600 hover:text-red-800 p-1"
+                                                                title="Hapus">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <p class="text-sm text-gray-600 mt-1">{{ $item->uraian_item }}</p>
-                                            <div class="mt-2 flex items-center text-xs text-gray-500 space-x-3">
-                                                <span><i class="fas fa-copy mr-1"></i> {{ $item->jumlah }}
-                                                    {{ $item->satuan }}</span>
-                                                <span><i class="fas fa-info-circle mr-1"></i> {{ $item->kondisi }}</span>
+
+                                            <p class="text-sm text-gray-800 mt-1 font-medium">{{ $item->uraian_item }}</p>
+                                            @if($item->asal_surat)
+                                                <p class="text-xs text-gray-600 mt-0.5"><i class="fas fa-building mr-1"></i>
+                                                    {{ $item->asal_surat }}</p>
+                                            @endif
+
+                                            <div class="mt-2 flex flex-wrap items-center text-xs text-gray-500 gap-3">
+                                                <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">
+                                                    {{ $item->jumlah_eksemplar }} Eks
+                                                </span>
+                                                <span
+                                                    class="bg-purple-50 text-purple-700 px-2 py-0.5 rounded border border-purple-100">
+                                                    {{ $item->tingkat_perkembangan }}
+                                                </span>
+                                                <span
+                                                    class="bg-orange-50 text-orange-700 px-2 py-0.5 rounded border border-orange-100">
+                                                    {{ $item->jenis_fisik }}
+                                                </span>
+                                                <span
+                                                    class="{{ $item->kondisi_fisik == 'Baik' ? 'text-green-600' : 'text-red-600' }}">
+                                                    <i class="fas fa-heartbeat mr-1"></i> {{ $item->kondisi_fisik }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -174,11 +216,12 @@
                     </h3>
 
                     <div class="space-y-3">
-                        <!-- TODO: Add route for creating item arsip -->
-                        <button disabled
-                            class="w-full flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-400 rounded-lg cursor-not-allowed">
+                        <!-- Add route for creating item arsip -->
+                        <a href="{{ route('item-arsip.create', ['berkas' => $berkasArsip->id]) }}"
+                            class="w-full flex items-center justify-center px-4 py-2 text-white rounded-lg shadow hover:shadow-md transition-all"
+                            style="background-color: #008e3c;">
                             <i class="fas fa-plus mr-2"></i>Tambah Item Arsip
-                        </button>
+                        </a>
 
                         <a href="{{ route('berkas-arsip.edit', $berkasArsip) }}"
                             class="w-full flex items-center justify-center px-4 py-2 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors">

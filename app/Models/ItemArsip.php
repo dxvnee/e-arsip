@@ -23,10 +23,13 @@ class ItemArsip extends Model
         'berkas_arsip_id',
         'nomor_item',
         'uraian_item',
-        'tanggal_arsip',
-        'jumlah',
-        'satuan',
-        'kondisi',
+        'nomor_surat',
+        'tanggal_surat',
+        'asal_surat',
+        'jumlah_eksemplar',
+        'tingkat_perkembangan',
+        'jenis_fisik',
+        'kondisi_fisik',
         'keterangan',
         'file_path',
     ];
@@ -35,8 +38,8 @@ class ItemArsip extends Model
      * The attributes that should be cast.
      */
     protected $casts = [
-        'tanggal_arsip' => 'date',
-        'jumlah' => 'integer',
+        'tanggal_surat' => 'date',
+        'jumlah_eksemplar' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -59,7 +62,7 @@ class ItemArsip extends Model
      */
     public function getFormattedTanggalAttribute(): string
     {
-        return $this->tanggal_arsip ? $this->tanggal_arsip->format('d/m/Y') : '-';
+        return $this->tanggal_surat ? $this->tanggal_surat->translatedFormat('d F Y') : '-';
     }
 
     /**
@@ -105,6 +108,14 @@ class ItemArsip extends Model
      */
     public function scopeDateBetween($query, $startDate, $endDate)
     {
-        return $query->whereBetween('tanggal_arsip', [$startDate, $endDate]);
+        return $query->whereBetween('tanggal_surat', [$startDate, $endDate]);
+    }
+
+    /**
+     * Check if item has digital file.
+     */
+    public function hasFile(): bool
+    {
+        return !empty($this->file_path);
     }
 }

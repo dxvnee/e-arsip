@@ -263,7 +263,7 @@ class BerkasArsipController extends Controller
         $klasifikasiId = $request->get('klasifikasi_id');
 
         $berkas = BerkasArsip::active()
-            ->where('klasifikasi_arsip_id', $klasifikasiId)
+            ->where('kode_klasifikasi_id', $klasifikasiId)
             ->orderBy('nomor_berkas')
             ->get(['id', 'nomor_berkas', 'uraian_berkas', 'tahun']);
 

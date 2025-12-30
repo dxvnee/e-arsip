@@ -11,6 +11,7 @@ use App\Http\Controllers\DisposisiController;
 use App\Http\Controllers\KlasifikasiArsipController;
 use App\Http\Controllers\LokasiArsipController;
 use App\Http\Controllers\BerkasArsipController;
+use App\Http\Controllers\ItemArsipController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root to login
@@ -49,6 +50,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Berkas Arsip (Main Transaction)
     Route::resource('berkas-arsip', BerkasArsipController::class);
+
+    // Item Arsip
+    Route::resource('item-arsip', ItemArsipController::class)->except(['index', 'show']);
 });
 
 require __DIR__ . '/auth.php';
