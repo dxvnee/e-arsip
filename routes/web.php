@@ -12,6 +12,7 @@ use App\Http\Controllers\KlasifikasiArsipController;
 use App\Http\Controllers\LokasiArsipController;
 use App\Http\Controllers\BerkasArsipController;
 use App\Http\Controllers\ItemArsipController;
+use App\Http\Controllers\ArsipFileController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root to login
@@ -53,6 +54,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Item Arsip
     Route::resource('item-arsip', ItemArsipController::class)->except(['index', 'show']);
+
+    // Arsip File (Digital Files)
+    Route::get('arsip-file/create', [ArsipFileController::class, 'create'])->name('arsip-file.create');
+    Route::post('arsip-file', [ArsipFileController::class, 'store'])->name('arsip-file.store');
+    Route::get('arsip-file/{arsipFile}/download', [ArsipFileController::class, 'download'])->name('arsip-file.download');
+    Route::get('arsip-file/{arsipFile}/preview', [ArsipFileController::class, 'preview'])->name('arsip-file.preview');
+    Route::delete('arsip-file/{arsipFile}', [ArsipFileController::class, 'destroy'])->name('arsip-file.destroy');
 });
 
 require __DIR__ . '/auth.php';

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class KlasifikasiArsip extends Model
 {
     use HasFactory, SoftDeletes;
@@ -72,6 +74,14 @@ class KlasifikasiArsip extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    /**
+     * Relationship: KlasifikasiArsip has many BerkasArsip.
+     */
+    public function berkasArsip(): HasMany
+    {
+        return $this->hasMany(BerkasArsip::class, 'kode_klasifikasi_id');
     }
 
     /**

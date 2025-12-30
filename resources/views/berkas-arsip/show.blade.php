@@ -183,6 +183,59 @@
                                                     <i class="fas fa-heartbeat mr-1"></i> {{ $item->kondisi_fisik }}
                                                 </span>
                                             </div>
+
+                                            <!-- File Attachments -->
+                                            @if($item->arsipFiles->count() > 0)
+                                                <div class="mt-3 pt-3 border-t border-gray-200">
+                                                    <div class="flex items-center justify-between mb-2">
+                                                        <span class="text-xs font-medium text-gray-600">
+                                                            <i class="fas fa-paperclip mr-1"></i> File Digital
+                                                            ({{ $item->arsipFiles->count() }})
+                                                        </span>
+                                                        <a href="{{ route('arsip-file.create', ['item' => $item->id]) }}"
+                                                            class="text-xs text-green-600 hover:text-green-800">
+                                                            <i class="fas fa-plus"></i> Tambah
+                                                        </a>
+                                                    </div>
+                                                    <div class="flex flex-wrap gap-2">
+                                                        @foreach($item->arsipFiles as $file)
+                                                            <div
+                                                                class="flex items-center bg-white border rounded px-2 py-1 text-xs group/file">
+                                                                <i class="fas {{ $file->file_icon }} mr-1.5"></i>
+                                                                <span class="max-w-[100px] truncate"
+                                                                    title="{{ $file->nama_file }}">{{ $file->nama_file }}</span>
+                                                                <div
+                                                                    class="ml-2 flex items-center space-x-1 opacity-0 group-hover/file:opacity-100 transition-opacity">
+                                                                    <a href="{{ route('arsip-file.preview', $file) }}" target="_blank"
+                                                                        class="text-blue-500 hover:text-blue-700" title="Preview">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </a>
+                                                                    <a href="{{ route('arsip-file.download', $file) }}"
+                                                                        class="text-green-500 hover:text-green-700" title="Download">
+                                                                        <i class="fas fa-download"></i>
+                                                                    </a>
+                                                                    <form action="{{ route('arsip-file.destroy', $file) }}" method="POST"
+                                                                        class="inline" onsubmit="return confirm('Hapus file ini?');">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit" class="text-red-500 hover:text-red-700"
+                                                                            title="Hapus">
+                                                                            <i class="fas fa-trash"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div class="mt-3 pt-3 border-t border-gray-200">
+                                                    <a href="{{ route('arsip-file.create', ['item' => $item->id]) }}"
+                                                        class="inline-flex items-center text-xs text-gray-500 hover:text-green-600">
+                                                        <i class="fas fa-cloud-upload-alt mr-1"></i> Upload file digital
+                                                    </a>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @endforeach

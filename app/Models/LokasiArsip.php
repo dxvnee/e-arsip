@@ -104,6 +104,14 @@ class LokasiArsip extends Model
     }
 
     /**
+     * Relationship: LokasiArsip has many BerkasArsip.
+     */
+    public function berkasArsip(): HasMany
+    {
+        return $this->hasMany(BerkasArsip::class, 'lokasi_arsip_id');
+    }
+
+    /**
      * Get arsip count
      */
     public function getArsipCountAttribute(): int

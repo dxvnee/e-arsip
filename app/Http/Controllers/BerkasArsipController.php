@@ -142,8 +142,9 @@ class BerkasArsipController extends Controller
     {
         $berkasArsip->load(['klasifikasiArsip', 'lokasiArsip']);
 
-        // Get item arsip in this berkas
+        // Get item arsip in this berkas with files
         $itemList = $berkasArsip->itemArsip()
+            ->with('arsipFiles')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ItemArsip extends Model
 {
@@ -53,6 +54,14 @@ class ItemArsip extends Model
     public function berkasArsip(): BelongsTo
     {
         return $this->belongsTo(BerkasArsip::class, 'berkas_arsip_id');
+    }
+
+    /**
+     * Relationship: ItemArsip has many ArsipFile.
+     */
+    public function arsipFiles(): HasMany
+    {
+        return $this->hasMany(ArsipFile::class, 'item_arsip_id');
     }
 
     // ==================== ACCESSORS ====================
@@ -112,10 +121,18 @@ class ItemArsip extends Model
     }
 
     /**
-     * Check if item has digital file.
+     * Check if item has digital files.
      */
     public function hasFile(): bool
     {
-        return !empty($this->file_path);
+        return $this->arsipFiles()->exists();
+    }
+
+    /**
+     * Get file count.
+     */
+    public function getFileCountAttribute(): int
+    {
+        return $this->arsipFiles()->count();
     }
 }
