@@ -7,35 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Arsip extends Model
+class ItemArsip extends Model
 {
     use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
      */
-    protected $table = 'arsip';
+    protected $table = 'item_arsip';
 
     /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
         'berkas_arsip_id',
-        'lokasi_arsip_id',
-        'nomor_arsip',
-        'judul_arsip',
+        'nomor_item',
+        'uraian_item',
         'tanggal_arsip',
-        'jenis_arsip',
-        'sifat_arsip',
-        'tingkat_perkembangan',
-        'media_arsip',
         'jumlah',
         'satuan',
         'kondisi',
         'keterangan',
         'file_path',
-        'created_by',
-        'updated_by',
     ];
 
     /**
@@ -43,42 +36,23 @@ class Arsip extends Model
      */
     protected $casts = [
         'tanggal_arsip' => 'date',
+        'jumlah' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
 
+    // ==================== RELATIONSHIPS ====================
+
     /**
-     * Relationship: Arsip belongs to BerkasArsip.
+     * Relationship: ItemArsip belongs to BerkasArsip.
      */
     public function berkasArsip(): BelongsTo
     {
         return $this->belongsTo(BerkasArsip::class, 'berkas_arsip_id');
     }
 
-    /**
-     * Relationship: Arsip belongs to LokasiArsip.
-     */
-    public function lokasiArsip(): BelongsTo
-    {
-        return $this->belongsTo(LokasiArsip::class, 'lokasi_arsip_id');
-    }
-
-    /**
-     * Relationship: Arsip belongs to User (creator).
-     */
-    public function creator(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    /**
-     * Relationship: Arsip belongs to User (updater).
-     */
-    public function updater(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'updated_by');
-    }
+    // ==================== ACCESSORS ====================
 
     /**
      * Accessor: Get formatted tanggal.
@@ -97,13 +71,23 @@ class Arsip extends Model
     }
 
     /**
+     * Accessor: Get lokasi through berkas.
+     */
+    public function getLokasiAttribute()
+    {
+        return $this->berkasArsip?->lokasiArsip;
+    }
+
+    // ==================== SCOPES ====================
+
+    /**
      * Scope: Search by keyword.
      */
     public function scopeSearch($query, $keyword)
     {
         return $query->where(function ($q) use ($keyword) {
-            $q->where('nomor_arsip', 'like', "%{$keyword}%")
-                ->orWhere('judul_arsip', 'like', "%{$keyword}%")
+            $q->where('nomor_item', 'like', "%{$keyword}%")
+                ->orWhere('uraian_item', 'like', "%{$keyword}%")
                 ->orWhere('keterangan', 'like', "%{$keyword}%");
         });
     }
@@ -114,22 +98,6 @@ class Arsip extends Model
     public function scopeByBerkas($query, $berkasId)
     {
         return $query->where('berkas_arsip_id', $berkasId);
-    }
-
-    /**
-     * Scope: Filter by lokasi.
-     */
-    public function scopeByLokasi($query, $lokasiId)
-    {
-        return $query->where('lokasi_arsip_id', $lokasiId);
-    }
-
-    /**
-     * Scope: Filter by jenis arsip.
-     */
-    public function scopeByJenis($query, $jenis)
-    {
-        return $query->where('jenis_arsip', $jenis);
     }
 
     /**

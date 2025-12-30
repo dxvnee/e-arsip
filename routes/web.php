@@ -8,6 +8,9 @@ use App\Http\Controllers\UnitKerjaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\DisposisiController;
+use App\Http\Controllers\KlasifikasiArsipController;
+use App\Http\Controllers\LokasiArsipController;
+use App\Http\Controllers\BerkasArsipController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root to login
@@ -25,23 +28,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Arsip Management
-    Route::resource('arsip', ArsipController::class);
-    Route::get('/arsip/{arsip}/download', [ArsipController::class, 'download'])->name('arsip.download');
-    Route::get('/arsip/{arsip}/preview', [ArsipController::class, 'preview'])->name('arsip.preview');
-    Route::get('/arsip/{arsip}/versions', [ArsipController::class, 'versions'])->name('arsip.versions');
-    Route::get('/arsip/{arsip}/version/{version}/download', [ArsipController::class, 'downloadVersion'])->name('arsip.version.download');
-    Route::get('arsip/{arsip}/download', [ArsipController::class, 'download'])->name('arsip.download');
+    // Klasifikasi Arsip (Master Data)
+    Route::resource('klasifikasi-arsip', KlasifikasiArsipController::class);
+    Route::patch('klasifikasi-arsip/{klasifikasiArsip}/toggle-status', [KlasifikasiArsipController::class, 'toggleStatus'])
+        ->name('klasifikasi-arsip.toggle-status');
+    Route::post('klasifikasi-arsip/{id}/restore', [KlasifikasiArsipController::class, 'restore'])
+        ->name('klasifikasi-arsip.restore');
 
+    // Lokasi Arsip (Master Data)
+    Route::resource('lokasi-arsip', LokasiArsipController::class);
+    Route::patch('lokasi-arsip/{lokasiArsip}/toggle-status', [LokasiArsipController::class, 'toggleStatus'])
+        ->name('lokasi-arsip.toggle-status');
+    Route::post('lokasi-arsip/{id}/restore', [LokasiArsipController::class, 'restore'])
+        ->name('lokasi-arsip.restore');
+    // AJAX endpoints for Lokasi Arsip dropdowns
+    Route::get('lokasi-arsip/ajax/gedung', [LokasiArsipController::class, 'getByGedung'])
+        ->name('lokasi-arsip.by-gedung');
+    Route::get('lokasi-arsip/ajax/locations', [LokasiArsipController::class, 'getLocations'])
+        ->name('lokasi-arsip.locations');
 
-    // Admin Only Route
-
-    // Laporan - All authenticated users can access
-    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
-    Route::post('/laporan/arsip-masuk-keluar', [LaporanController::class, 'arsipMasukKeluar'])->name('laporan.arsip-masuk-keluar');
-    Route::get('/laporan/statistik', [LaporanController::class, 'statistikArsip'])->name('laporan.statistik');
-    Route::post('/laporan/aktivitas', [LaporanController::class, 'aktivitas'])->name('laporan.aktivitas');
-    Route::post('/laporan/disposisi', [LaporanController::class, 'disposisi'])->name('laporan.disposisi');
+    // Berkas Arsip (Main Transaction)
+    Route::resource('berkas-arsip', BerkasArsipController::class);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

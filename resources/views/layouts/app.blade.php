@@ -63,58 +63,106 @@
                     <span>Dashboard</span>
                 </a>
 
-                @if(auth()->user()->role !== 'viewer')
-                    <!-- Arsip -->
-                    <div x-data="{ open: {{ request()->routeIs('arsip.*') ? 'true' : 'false' }} }">
+                <!-- Berkas Arsip -->
+                <a href="{{ route('berkas-arsip.index') }}"
+                    class="group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
+                    style="{{ request()->routeIs('berkas-arsip.*') ? 'background-color: #006b2d; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);' : 'color: #e5e7eb;' }}"
+                    onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(229, 231, 235)') { this.style.backgroundColor='rgba(255, 255, 255, 0.1)'; }"
+                    onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.1)') { this.style.backgroundColor=''; }">
+                    <i class="fas fa-folder-open mr-3 text-lg" style="color: #efd856;"></i>
+                    <span>Berkas Arsip</span>
+                </a>
+
+                @if(Route::has('arsip.index'))
+                    @if(auth()->user()->role !== 'viewer')
+                        <!-- Arsip -->
+                        <div x-data="{ open: {{ request()->routeIs('arsip.*') ? 'true' : 'false' }} }">
+                            <button @click="open = !open"
+                                class="group w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
+                                style="color: #e5e7eb;" onmouseover="this.style.backgroundColor='rgba(255, 255, 255, 0.1)'"
+                                onmouseout="this.style.backgroundColor=''">
+                                <i class="fas fa-file-alt mr-3 text-lg" style="color: #efd856;"></i>
+                                <span class="flex-1 text-left">Arsip</span>
+                                <i class="fas fa-chevron-down transition-transform duration-200 text-xs"
+                                    :class="open ? 'transform rotate-180' : ''"></i>
+                            </button>
+                            <div x-show="open" x-transition class="mt-2 ml-4 space-y-1">
+                                <a href="{{ route('arsip.index') }}"
+                                    class="flex items-center pl-8 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200"
+                                    style="{{ request()->routeIs('arsip.index') ? 'background-color: #006b2d; color: white;' : 'color: #d1d5db;' }}"
+                                    onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(209, 213, 219)') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }"
+                                    onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.05)') { this.style.backgroundColor=''; }">
+                                    <i class="fas fa-list mr-2 text-xs" style="color: #efd856;"></i>
+                                    Daftar Arsip
+                                </a>
+                                <a href="{{ route('arsip.create') }}"
+                                    class="flex items-center pl-8 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200"
+                                    style="{{ request()->routeIs('arsip.create') ? 'background-color: #007b2d; color: white;' : 'color: #d1d5db;' }}"
+                                    onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(209, 213, 219)') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }"
+                                    onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.05)') { this.style.backgroundColor=''; }">
+                                    <i class="fas fa-plus mr-2 text-xs" style="color: #efd856;"></i>
+                                    Tambah Arsip
+                                </a>
+                            </div>
+                        </div>
+                    @else
+                        <!-- View Only Arsip for Viewer -->
+                        <a href="{{ route('arsip.index') }}"
+                            class="group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
+                            style="{{ request()->routeIs('arsip.*') ? 'background-color: #006b2d; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);' : 'color: #e5e7eb;' }}"
+                            onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(229, 231, 235)') { this.style.backgroundColor='rgba(255, 255, 255, 0.1)'; }"
+                            onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.1)') { this.style.backgroundColor=''; }">
+                            <i class="fas fa-file-alt mr-3 text-lg" style="color: #efd856;"></i>
+                            <span>Daftar Arsip</span>
+                        </a>
+                    @endif
+                @endif
+
+                <!-- Master Data - Klasifikasi Arsip (Admin Only) -->
+                @if(auth()->user()->role === 'admin')
+                    <div
+                        x-data="{ open: {{ request()->routeIs('klasifikasi-arsip.*') || request()->routeIs('lokasi-arsip.*') ? 'true' : 'false' }} }">
                         <button @click="open = !open"
                             class="group w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
                             style="color: #e5e7eb;" onmouseover="this.style.backgroundColor='rgba(255, 255, 255, 0.1)'"
                             onmouseout="this.style.backgroundColor=''">
-                            <i class="fas fa-file-alt mr-3 text-lg" style="color: #efd856;"></i>
-                            <span class="flex-1 text-left">Arsip</span>
+                            <i class="fas fa-database mr-3 text-lg" style="color: #efd856;"></i>
+                            <span class="flex-1 text-left">Master Data</span>
                             <i class="fas fa-chevron-down transition-transform duration-200 text-xs"
                                 :class="open ? 'transform rotate-180' : ''"></i>
                         </button>
                         <div x-show="open" x-transition class="mt-2 ml-4 space-y-1">
-                            <a href="{{ route('arsip.index') }}"
+                            <a href="{{ route('klasifikasi-arsip.index') }}"
                                 class="flex items-center pl-8 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200"
-                                style="{{ request()->routeIs('arsip.index') ? 'background-color: #006b2d; color: white;' : 'color: #d1d5db;' }}"
+                                style="{{ request()->routeIs('klasifikasi-arsip.*') ? 'background-color: #006b2d; color: white;' : 'color: #d1d5db;' }}"
                                 onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(209, 213, 219)') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }"
                                 onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.05)') { this.style.backgroundColor=''; }">
-                                <i class="fas fa-list mr-2 text-xs" style="color: #efd856;"></i>
-                                Daftar Arsip
+                                <i class="fas fa-folder-tree mr-2 text-xs" style="color: #efd856;"></i>
+                                Kode Klasifikasi
                             </a>
-                            <a href="{{ route('arsip.create') }}"
+                            <a href="{{ route('lokasi-arsip.index') }}"
                                 class="flex items-center pl-8 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200"
-                                style="{{ request()->routeIs('arsip.create') ? 'background-color: #007b2d; color: white;' : 'color: #d1d5db;' }}"
+                                style="{{ request()->routeIs('lokasi-arsip.*') ? 'background-color: #006b2d; color: white;' : 'color: #d1d5db;' }}"
                                 onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(209, 213, 219)') { this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; }"
                                 onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.05)') { this.style.backgroundColor=''; }">
-                                <i class="fas fa-plus mr-2 text-xs" style="color: #efd856;"></i>
-                                Tambah Arsip
+                                <i class="fas fa-map-marker-alt mr-2 text-xs" style="color: #efd856;"></i>
+                                Lokasi Arsip
                             </a>
                         </div>
                     </div>
-                @else
-                    <!-- View Only Arsip for Viewer -->
-                    <a href="{{ route('arsip.index') }}"
-                        class="group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
-                        style="{{ request()->routeIs('arsip.*') ? 'background-color: #006b2d; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);' : 'color: #e5e7eb;' }}"
-                        onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(229, 231, 235)') { this.style.backgroundColor='rgba(255, 255, 255, 0.1)'; }"
-                        onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.1)') { this.style.backgroundColor=''; }">
-                        <i class="fas fa-file-alt mr-3 text-lg" style="color: #efd856;"></i>
-                        <span>Daftar Arsip</span>
-                    </a>
                 @endif
 
                 <!-- Laporan -->
-                <a href="{{ route('laporan.index') }}"
-                    class="group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
-                    style="{{ request()->routeIs('laporan.*') ? 'background-color: #006b2d; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);' : 'color: #e5e7eb;' }}"
-                    onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(229, 231, 235)') { this.style.backgroundColor='rgba(255, 255, 255, 0.1)'; }"
-                    onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.1)') { this.style.backgroundColor=''; }">
-                    <i class="fas fa-chart-bar mr-3 text-lg" style="color: #efd856;"></i>
-                    <span>Laporan</span>
-                </a>
+                @if(Route::has('laporan.index'))
+                    <a href="{{ route('laporan.index') }}"
+                        class="group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200"
+                        style="{{ request()->routeIs('laporan.*') ? 'background-color: #006b2d; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);' : 'color: #e5e7eb;' }}"
+                        onmouseover="if (!this.style.backgroundColor || this.style.backgroundColor === 'rgb(229, 231, 235)') { this.style.backgroundColor='rgba(255, 255, 255, 0.1)'; }"
+                        onmouseout="if (this.style.backgroundColor === 'rgba(255, 255, 255, 0.1)') { this.style.backgroundColor=''; }">
+                        <i class="fas fa-chart-bar mr-3 text-lg" style="color: #efd856;"></i>
+                        <span>Laporan</span>
+                    </a>
+                @endif
             </nav>
 
             <!-- User Info -->
