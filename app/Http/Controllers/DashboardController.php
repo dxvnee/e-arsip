@@ -103,7 +103,7 @@ class DashboardController extends Controller
         // ==================== STORAGE INFO ====================
         $totalStorageBytes = ArsipFile::sum('ukuran');
         $totalStorageFormatted = $this->formatBytes($totalStorageBytes);
-        
+
         $fileTypes = ArsipFile::select('tipe_file', DB::raw('count(*) as total'), DB::raw('sum(ukuran) as total_size'))
             ->groupBy('tipe_file')
             ->get()
@@ -153,7 +153,7 @@ class DashboardController extends Controller
         // ==================== PERTUMBUHAN DATA ====================
         $thisMonth = Carbon::now()->startOfMonth();
         $lastMonth = Carbon::now()->subMonth()->startOfMonth();
-        
+
         $berkasThisMonth = BerkasArsip::where('created_at', '>=', $thisMonth)->count();
         $berkasLastMonth = BerkasArsip::whereBetween('created_at', [$lastMonth, $thisMonth])->count();
         $berkasGrowth = $berkasLastMonth > 0 ? round((($berkasThisMonth - $berkasLastMonth) / $berkasLastMonth) * 100, 1) : 0;
